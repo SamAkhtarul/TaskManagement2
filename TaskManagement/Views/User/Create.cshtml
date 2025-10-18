@@ -1,0 +1,38 @@
+﻿@model TaskManagement.Models.Employee
+
+@{
+    ViewData["Title"] = "Create User";
+}
+
+<h2>Create User</h2>
+
+<form asp-action="Create" asp-controller="User" enctype="multipart/form-data">
+    <div asp-validation-summary="All"></div>
+    <label for="Name">Name:</label>
+    <input type="text" asp-for="Name" id="Name" name="Name" class="form-control" required />
+    <span asp-validation-for="Name" class="text-danger"></span>
+
+    <br />
+    <label for="PhoneNo">Phone No:</label>
+    <input type="text" asp-for="PhoneNo" id="PhoneNo" name="PhoneNo" class="form-control" required />
+    <span asp-validation-for="PhoneNo" class="text-danger"></span>
+
+    <br />
+    <div>
+        <label for="Email">Email</label>
+        <input type="text" id="Email" name="Email" class="form-control" asp-for="Email" required />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <br />
+    <div>
+        <label for="Picture">Picture</label>
+        <input type="file" id="Picture" name="Picture" class="form-control" accept=".jpg,.jpeg,.png" />
+        <span asp-validation-for="Picture" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <button type="reset" class="btn btn-warning">Reset</button>
+    <br />
+    <a asp-action="Index" asp-controller="User" class="btn btn-secondary">Back to List</a>
+</form>

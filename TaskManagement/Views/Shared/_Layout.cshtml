@@ -1,0 +1,139 @@
+@using Microsoft.AspNetCore.Identity
+@using TaskManagement.Data
+@using TaskManagement.Models
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject TaskDbContext _dbContext
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"] - TaskManagement</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/lib/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/lib/adminlte/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    
+    
+    
+    <partial name="_navbar" />
+
+    
+    
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="/" class="brand-link">
+            <span class="brand-text font-weight-light">TaskManagement</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                var user = _dbContext.Employees.FirstOrDefault(e => e.Email.Equals(User.Identity.Name));
+                @if (user != null)
+                {
+                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                        <div class="image">
+                            @await Component.InvokeAsync("ProfilePicture")
+                        </div>
+                        <div class="info">
+                            <a href="#" class="d-block">@user.Name</a>
+                        </div>
+                    </div>
+                }
+            }
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index"><i class="nav-icon fas fa-home"></i>
+                            <p>Home</p></a>
+                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @if (User.IsInRole("Admin") || User.IsInRole("Super Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="TaskList" asp-action="Index"><i class="nav-icon fas fa-tasks"></i>
+                                    <p>Tasks</p></a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="TaskAssigned" asp-action="Index"><i class="nav-icon fas fa-user-tag"></i>
+                                <p>Assigned Tasks</p></a>
+                        </li>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Super Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="ManageRole" asp-action="Index"><i class="nav-icon fas fa-user-cog"></i>
+                                    <p>Role</p></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="ManageUser" asp-action="Index"><i class="nav-icon fas fa-user-edit"></i>
+                                    <p>User</p></a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <form id="logoutForm" class="form-inline ml-auto" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                <button id="logout" type="submit" class="nav-link btn btn-link text-white border-0"><i class="nav-icon fas fa-sign-out-alt"></i>
+                                    <p>Logout</p></button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Register"><i class="nav-icon fas fa-user-plus"></i>
+                                <p>Register</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Login"><i class="nav-icon fas fa-sign-in-alt"></i>
+                                <p>Login</p></a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                @RenderBody()
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        &copy; 2025 - TaskManagement - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </footer>
+
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="~/lib/adminlte/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="~/lib/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="~/lib/adminlte/dist/js/adminlte.min.js"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

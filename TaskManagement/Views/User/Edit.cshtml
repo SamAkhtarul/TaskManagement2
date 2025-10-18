@@ -1,0 +1,46 @@
+﻿@model TaskManagement.Models.Employee
+
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<h2>Edit User</h2>
+
+<form asp-action="Edit" asp-controller="User" enctype="multipart/form-data">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <label for="Name">Name:</label>
+    <input type="text" id="Name" name="Name" class="form-control" value="@Model.Name" required />
+    <span asp-validation-for="Name" class="text-danger"></span>
+    <br />
+    <label for="Email">Email:</label>
+    <input type="email" id="Email" name="Email" class="form-control" value="@Model.Email" readonly />
+    <span asp-validation-for="Email" class="text-danger"></span>
+    <br />
+    <label for="PhoneNo">Phone No:</label>
+    <input type="text" id="PhoneNo" name="PhoneNo" class="form-control" value="@Model.PhoneNo" required />
+    <span asp-validation-for="PhoneNo" class="text-danger"></span>
+    <br />
+
+    <div>
+        <label>Current Picture:</label><br />
+        @if (!string.IsNullOrEmpty(Model.PicturePath))
+        {
+            <img src="@Model.PicturePath" alt="User Image" width="80" height="80" style="object-fit:cover;" />
+        }
+        else
+        {
+            <span>No Image</span>
+        }
+    </div>
+    <br />
+    <div>
+        <label for="Picture">Change Picture:</label>
+        <input type="file" id="Picture" name="Picture" class="form-control" accept=".jpg,.jpeg,.png" />
+        <span asp-validation-for="Picture" class="text-danger"></span>
+    </div>
+    <br />
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <br />
+    <a asp-action="Index" asp-controller="User" class="btn btn-secondary">Back to List</a>
+</form>

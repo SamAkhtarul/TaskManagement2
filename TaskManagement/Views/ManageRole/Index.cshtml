@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+@{
+    ViewData["Title"] = "Manage Roles";
+}
+@if (User.IsInRole("Super Admin"))
+{
+    <a asp-action="Create" asp-controller="ManageRole">Add Role</a>
+}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Name</td>
+            <td>Actions</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in Model)
+        {
+            <tr>
+                <td>@role.Id</td>
+                <td>@role.Name</td>
+                <td>
+                    @if (User.IsInRole("Super Admin"))
+                    {
+                        <a asp-action="Edit" asp-controller="ManageRole" asp-route-id="@role.Id" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                        <a asp-action="Delete" asp-controller="ManageRole" asp-route-id="@role.Id" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

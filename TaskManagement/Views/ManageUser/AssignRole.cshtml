@@ -1,0 +1,38 @@
+﻿
+@if (ViewBag.Msg != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Error!</strong> @ViewBag.Msg.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+<a asp-action="Create" >Add User</a>
+<form method="post" asp-action="AssignRole" asp-controller="ManageUser">
+
+    <div asp-validation-summary="All"></div>
+    <div class="container">
+        <div>
+            <label>User Name</label>
+            <input name="username" type="text" value="@ViewBag.Username" readonly />
+            <input name="userId" type="hidden" value="@ViewBag.UserId" />
+        </div>
+        <div>
+            <label>Role</label>
+            <select multiple name="roleName">
+                <option value="">Select Role</option>
+
+                @foreach (var user in @ViewBag.RoleList)
+                {
+                    <option value="@user.Name">@user.Name</option>
+                }
+            </select>
+        </div>
+      
+        <div>
+
+            <button class="btn btn-success" type="submit">Save</button>
+        </div>
+    </div>
+</form>

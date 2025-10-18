@@ -1,0 +1,49 @@
+﻿@model TaskManagement.Models.AssignedTask
+@{
+    ViewData["Title"] = "Assign Task to USer";
+}
+<form method="post" asp-action="Create" asp-controller="TaskAssigned">
+    
+    <div asp-validation-summary="All" ></div>
+<div class="container">
+    <div>
+    <label>User</label>
+    <select asp-for="UserId">
+        <option value="">Select User</option>
+
+        @foreach (var user in Model.Users)
+        {
+            <option  value="@user.Id">@user.Name (@user.Email)</option>
+        }
+    </select>
+    </div>
+    <div>
+        <label>Task list</label>
+            <select multiple asp-for="Tasklist" name="Tasklist">
+            <option value="">Select Task</option>
+
+            @foreach (var task in Model.Tasklist)
+            {
+                <option  value="@task.Id">@task.Title</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label>Assigned Date</label>
+        <div>
+            <input type="date" asp-for="AssignedDate" />
+        </div>
+    </div>
+        <div>
+            <label>Due Date</label>
+            <div>
+                <input type="date" asp-for="DueDate" />
+            </div>
+        </div>
+        
+    <div>
+        
+        <button class="btn btn-success" type="submit">Save</button>
+    </div>
+    </div>
+</form>

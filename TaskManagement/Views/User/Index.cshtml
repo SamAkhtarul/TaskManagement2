@@ -1,0 +1,43 @@
+﻿@model IEnumerable<TaskManagement.Models.Employee>
+@{
+    ViewData["Title"] = "Users";
+}
+
+<a asp-action="Create" asp-controller="User"> Create User </a>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Picture</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.PhoneNo</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.PicturePath))
+                    {
+                        <img src="@item.PicturePath" alt="User Image" width="60" height="60" style="object-fit:cover;" />
+                    }
+                    else
+                    {
+                        <span>No Image</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-controller="User" asp-route-id="@item.Id" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                    <a asp-action="Details" asp-controller="User" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-info-circle"></i></a>
+                    <a asp-action="Delete" asp-controller="User" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

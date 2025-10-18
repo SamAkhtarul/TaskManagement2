@@ -1,0 +1,64 @@
+﻿@model IEnumerable<TaskManagement.Models.AssignedTask>
+
+
+@{
+    ViewData["Title"] = "Assigned Tasks";
+}
+
+@if (User.IsInRole("Admin") || User.IsInRole("Super Admin"))
+{
+    <a asp-action="Create" asp-controller="TaskAssigned"> Create Task </a>
+}
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by status: 
+            <select name="filterStatus" asp-items="@Html.GetEnumSelectList<TaskManagement.Models.TaskStatus>()">
+                <option value="">All</option>
+            </select>
+           @* Find by name: <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" />*@
+            <input type="submit" value="Filter" class="btn btn-default" />
+        </p>
+    </div>
+</form>
+
+<table class="table table-bordered">
+    <tr>
+        <th>
+            <a asp-action="Index" asp-route-sortOrder="@ViewData["TaskSortParm"]">Task</a>
+        </th>
+        <th>
+            <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">Assigned To</a>
+        </th>
+        <th>
+            <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">Assigned Date</a>
+        </th>
+        <th>
+            <a asp-action="Index" asp-route-sortOrder="@ViewData["DueDateSortParm"]">Due Date</a>
+        </th>
+        <th>Submit Date</th>
+        <th>Status</th>
+        <th>Remarks</th>
+        <th>Actions</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Task.Title</td>
+            <td>@item.User.Name</td>
+            <td>@item.AssignedDate.ToString("dd/MM/yyyy")</td>
+            <td>@item.DueDate.ToString("dd/MM/yyyy")</td>
+            <td>@item.SubmitDate.ToString("dd/MM/yyyy")</td>
+            <td>@item.Status</td>
+            <td>@item.Remarks</td>
+            @if (User.IsInRole("Admin") || User.IsInRole("Super Admin"))
+            {
+                <td>
+                    <a asp-action="Edit" asp-controller="TaskAssigned" asp-route-id="@item.Id" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                    <a asp-action="Delete" asp-controller="TaskAssigned" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                </td>
+            }
+        </tr>
+    }
+</table>

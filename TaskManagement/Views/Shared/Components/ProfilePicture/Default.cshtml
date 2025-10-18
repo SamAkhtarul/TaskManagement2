@@ -1,0 +1,10 @@
+@model string
+
+@if (!string.IsNullOrEmpty(Model))
+{
+    <img src="@Model" class="img-circle elevation-2" alt="User Image" style="width:40px; height:40px;">
+}
+else
+{
+    <img src="/Pictures/1.png" class="img-circle elevation-2" alt="User Image" style="width:40px; height:40px;">
+}
